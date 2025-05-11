@@ -1,0 +1,73 @@
+﻿@page
+@model Exercise3.Pages.Orders.CreateModel
+@{
+}
+
+<h2>Create New Order</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="Order.OrderDate">Order Date</label>
+        <input asp-for="Order.OrderDate" type="date" class="form-control" />
+        <span asp-validation-for="Order.OrderDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Order.AgentID">Agent</label>
+        <select asp-for="Order.AgentID" class="form-control" asp-items="@Model.AgentList"></select>
+        <span asp-validation-for="Order.AgentID" class="text-danger"></span>
+    </div>
+    <h4>Order Details</h4>
+    <div id="orderDetails">
+        <div class="order-detail">
+            <div class="form-group">
+                <label>Item</label>
+                <select name="OrderDetails[0].ItemID" class="form-control" asp-items="@Model.ItemList"></select>
+            </div>
+            <div class="form-group">
+                <label>Quantity</label>
+                <input name="OrderDetails[0].Quantity" type="number" class="form-control" value="1" />
+            </div>
+            <div class="form-group">
+                <label>Unit Amount</label>
+                <input name="OrderDetails[0].UnitAmount" type="number" step="0.01" class="form-control" value="0.00" />
+            </div>
+        </div>
+    </div>
+    <button type="button" onclick="addOrderDetail()" class="btn btn-secondary">Add Another Item</button>
+    <br /><br />
+    <button type="submit" class="btn btn-primary">Create Order</button>
+    <a asp-page="/Index" class="btn btn-secondary">Back</a>
+</form>
+
+<script>
+    let detailCount = 1;
+    function addOrderDetail() {
+        const container = document.getElementById('orderDetails');
+        const template = `
+            <div class="order-detail">
+                <div class="form-group">
+                    <label>Item</label>
+                    <select name="OrderDetails[${detailCount}].ItemID" class="form-control">
+                        @foreach (var item in Model.ItemList)
+                        {
+                            <option value="@item.Value">@item.Text</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Quantity</label>
+                    <input name="OrderDetails[${detailCount}].Quantity" type="number" class="form-control" value="1" />
+                </div>
+                <div class="form-group">
+                    <label>Unit Amount</label>
+                    <input name="OrderDetails[${detailCount}].UnitAmount" type="number" step="0.01" class="form-control" value="0.00" />
+                </div>
+            </div>`;
+        container.insertAdjacentHTML('beforeend', template);
+        detailCount++;
+    }
+</script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

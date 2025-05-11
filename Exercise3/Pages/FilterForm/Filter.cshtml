@@ -1,0 +1,112 @@
+﻿@page
+@model Exercise3.Pages.FilterForm.FilterModel
+@{
+    ViewData["Title"] = "Report Filter";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg mb-4">
+                <div class="card-body">
+                    <h3 class="card-title text-center mb-4">Filter Report</h3>
+
+                    <form method="get">
+                        <div class="mb-3">
+                            <label for="reportType" class="form-label">Select Report</label>
+                            <select id="reportType" name="reportType" class="form-select" asp-items="@Model.ReportTypes"></select>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Generate Report</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.ReportData != null)
+    {
+        <div class="card shadow-sm">
+            <div class="card-body">
+                @if (Model.ReportType == "BestItems")
+                {
+                    <h4 class="mb-3"> Best Items (Most Purchased)</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Item Name</th>
+                                    <th>Total Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ReportData)
+                                {
+                                    <tr>
+                                        <td>@item.ItemName</td>
+                                        <td>@item.TotalQuantity</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else if (Model.ReportType == "ItemsByAgent")
+                {
+                    <h4 class="mb-3"> Items Purchased by Agents</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Agent Name</th>
+                                    <th>Item Name</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ReportData)
+                                {
+                                    <tr>
+                                        <td>@item.AgentName</td>
+                                        <td>@item.ItemName</td>
+                                        <td>@item.Quantity</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else if (Model.ReportType == "AgentPurchases")
+                {
+                    <h4 class="mb-3"> Agent Purchases</h4>
+                    <div class="table-responsive">
+                        <table class="table table-bordered table-striped align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Agent Name</th>
+                                    <th>Order Date</th>
+                                    <th>Total Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.ReportData)
+                                {
+                                    <tr>
+                                        <td>@item.AgentName</td>
+                                        <td>@item.OrderDate.ToString("yyyy-MM-dd")</td>
+                                        <td>@item.TotalAmount.ToString("C")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+
+                <div class="mt-4 text-end">
+                    <a asp-page="/Index" class="btn btn-secondary">← Back</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

@@ -1,0 +1,45 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h2 class="card-title text-center mb-4">Welcome to Order Management</h2>
+
+                    @if (Model.IsLoggedIn)
+                    {
+                        <p class="text-center">Hello, <strong>@Model.UserName</strong>!</p>
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item">
+                                <a class="btn btn-outline-primary w-100" asp-page="/Items/Create">Add Item</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="btn btn-outline-primary w-100" asp-page="/Agents/Create">Add Agent</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="btn btn-outline-primary w-100" asp-page="/Orders/Create">Create Order</a>
+                            </li>
+                            <li class="list-group-item">
+                                <a class="btn btn-outline-primary w-100" asp-page="/FilterForm/Filter">View Reports</a>
+                            </li>
+                            <li class="list-group-item">
+                                <form method="post" asp-page="/Login" asp-page-handler="Logout" class="d-grid">
+                                    <button type="submit" class="btn btn-danger">Logout</button>
+                                </form>
+                            </li>
+                        </ul>
+                    }
+                    else
+                    {
+                        <p class="text-center">Please <a asp-page="/Login" class="btn btn-primary">Login</a> to continue.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
